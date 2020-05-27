@@ -85,7 +85,7 @@ public class Lexer {
                     charLiteral(c);
                     break;
                 case CHAR_LITERAL_SLASH:
-                    stringLiteralSlash(c);
+                    charLiteralSlash(c);
                     break;
 
                 default:
@@ -170,7 +170,25 @@ public class Lexer {
     }
 
     private void charLiteral(char c) {
+        if (c == '\'') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.CHAR_LITERAL);
+        } else if (c == '\n') {
+            addToken(TokenType.ERROR);
+            addToken(TokenType.WHITESPACE, c);
+            setState(INITIAL);
+        } else if (c == '\\') {
+            addBufferAndSetState(c, CHAR_LITERAL_SLASH);
+        } else {
+            addToBuffer(c);
+        }
+    }
 
+    private void charLiteralSlash(char c) {
+        if (!utils.isSlashChar(c)) {
+            buffer.deleteCharAt(buffer.length() - 1);
+        }
+        addBufferAndSetState(c, CHAR_LITERAL);
     }
 
 }

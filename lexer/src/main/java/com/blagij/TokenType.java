@@ -11,6 +11,7 @@ public enum TokenType {
     IDENTIFIER,
     INT_LITERAL,
     STRING_LITERAL,
+    CHAR_LITERAL,
     ERROR
 
 }
