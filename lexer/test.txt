@@ -1,0 +1,14 @@
+// івц йц comment 1
+// /*/*/*/*/*/*/*/*/*/*/*/*comment 2
+/*test
+*
+comment2
+*/
+/*test comment1*/
+/*test comment1*/
+" some text "
+" some text \q\""
+{ ( [ ) } ] ; , :
+int a = 5;
+a++;
+a = a + 1;

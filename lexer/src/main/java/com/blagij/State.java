@@ -1,0 +1,11 @@
+package com.blagij;
+
+public enum State {
+    INITIAL,
+    SINGLE_SLASH,
+    SINGLE_LINE_COMMENT,
+    MULTI_LINE_COMMENT,
+    STAR_IN_MULTI_LINE_COMMENT,
+    STRING_LITERAL,
+    STRING_LITERAL_SLASH
+}
