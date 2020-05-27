@@ -43,7 +43,7 @@ public class Lexer {
     }
 
     private void addToken(TokenType tokenType, char c) {
-        System.out.println(tokenType + " " + (tokenType == TokenType.WHITESPACE ? String.valueOf((int)c) : c));
+        System.out.println(tokenType + " " + (tokenType == TokenType.WHITESPACE ? String.valueOf((int) c) : c));
         tokens.add(new Token(tokenType, String.valueOf(c)));
     }
 
@@ -81,6 +81,12 @@ public class Lexer {
                 case STRING_LITERAL_SLASH:
                     stringLiteralSlash(c);
                     break;
+                case CHAR_LITERAL:
+                    charLiteral(c);
+                    break;
+                case CHAR_LITERAL_SLASH:
+                    stringLiteralSlash(c);
+                    break;
 
                 default:
                     break;
@@ -94,6 +100,8 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_SLASH);
         } else if (c == '\"') {
             addBufferAndSetState(c, STRING_LITERAL);
+        } else if (c == '\'') {
+            addBufferAndSetState(c, CHAR_LITERAL);
         } else if (Character.isWhitespace(c)) {
             addToken(TokenType.WHITESPACE, c);
         } else if (utils.isBracketCharacter(c)) {
@@ -155,14 +163,14 @@ public class Lexer {
     }
 
     private void stringLiteralSlash(char c) {
-        if (utils.isEscapeCharacter(c)) {
-            addBufferAndSetState(c, STRING_LITERAL);
-        } else {
+        if (!utils.isSlashChar(c)) {
             buffer.deleteCharAt(buffer.length() - 1);
-            addToken(TokenType.STRING_LITERAL);
-            addToken(TokenType.ERROR, "\\" + c);
-            setState(STRING_LITERAL);
         }
+        addBufferAndSetState(c, STRING_LITERAL);
+    }
+
+    private void charLiteral(char c) {
+
     }
 
 }

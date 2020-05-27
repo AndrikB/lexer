@@ -25,4 +25,7 @@ public class Utils {
         return separatorCharacters.contains(c);
     }
 
+    public boolean isSlashChar(Character c){
+        return isEscapeCharacter(c) || Character.isDigit(c) || c=='x';
+    }
 }
