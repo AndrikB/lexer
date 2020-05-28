@@ -235,8 +235,8 @@ public class Lexer {
         }
     }
 
-    private void singleMinus(char c){
-        if (c=='-' || c=='='){
+    private void singleMinus(char c) {
+        if (c == '-' || c == '=' || c == '>') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
@@ -246,8 +246,8 @@ public class Lexer {
         }
     }
 
-    private void singlePlus(char c){
-        if (c=='+' || c=='='){
+    private void singlePlus(char c) {
+        if (c == '+' || c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
@@ -260,7 +260,7 @@ public class Lexer {
     private void singleLess(char c) {
         if (c == '<') {
             addBufferAndSetState(c, DOUBLE_LESS);
-        } else if (c=='=') {
+        } else if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
@@ -271,7 +271,7 @@ public class Lexer {
     }
 
     private void doubleLess(char c) {
-        if (c=='=') {
+        if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
@@ -284,7 +284,7 @@ public class Lexer {
     private void singleGreater(char c) {
         if (c == '>') {
             addBufferAndSetState(c, DOUBLE_LESS);
-        } else if (c=='=') {
+        } else if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
@@ -295,7 +295,7 @@ public class Lexer {
     }
 
     private void doubleGreater(char c) {
-        if (c=='=') {
+        if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
