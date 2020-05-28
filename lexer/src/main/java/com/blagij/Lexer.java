@@ -91,8 +91,8 @@ public class Lexer {
                 case CHAR_LITERAL_SLASH:
                     charLiteralSlash(c);
                     break;
-                case SINGLE_EQUAL:
-                    singleEqual(c);
+                case SINGLE_OPERATOR:
+                    singleOperator(c);
                     break;
                 case SINGLE_MINUS:
                     singleMinus(c);
@@ -136,8 +136,8 @@ public class Lexer {
             addToken(TokenType.WHITESPACE, c);
         } else if (utils.isSeparatorCharacter(c)) {
             addToken(TokenType.SEPARATOR, c);
-        } else if (c == '=') {
-            addBufferAndSetState(c, SINGLE_EQUAL);
+        } else if (c == '=' || c == '*' || c == '%' || c == '!' || c == '^') {
+            addBufferAndSetState(c, SINGLE_OPERATOR);
         } else if (c == '-') {
             addBufferAndSetState(c, SINGLE_MINUS);
         } else if (c == '+') {
@@ -240,7 +240,7 @@ public class Lexer {
         addBufferAndSetState(c, CHAR_LITERAL);
     }
 
-    private void singleEqual(char c) {
+    private void singleOperator(char c) {
         if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
