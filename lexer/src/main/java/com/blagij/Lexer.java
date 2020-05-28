@@ -56,6 +56,10 @@ public class Lexer {
         this.state = state;
     }
 
+    private void rollBack() {
+        currentPos--;
+    }
+
     public void parse() {
         for (currentPos = 0; currentPos < code.length(); currentPos++) {
             char c = code.charAt(currentPos);
@@ -159,7 +163,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -243,7 +247,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -254,7 +258,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -265,7 +269,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -278,7 +282,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -289,7 +293,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -302,7 +306,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -313,7 +317,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -324,7 +328,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
@@ -335,7 +339,7 @@ public class Lexer {
         } else {
             addToken(TokenType.OPERATOR);
             setState(INITIAL);
-            currentPos--;
+            rollBack();
         }
     }
 
