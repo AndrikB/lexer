@@ -12,9 +12,9 @@ import static com.blagij.State.*;
 public class Lexer {
     private final String code;
     private final Utils utils = new Utils();
+    private final List<Token> tokens;
     private State state;
     private int currentPos;
-    private List<Token> tokens;
     private StringBuilder buffer;
 
     public Lexer(final String filePath) throws IOException {
@@ -87,7 +87,15 @@ public class Lexer {
                 case CHAR_LITERAL_SLASH:
                     charLiteralSlash(c);
                     break;
-
+                case SINGLE_EQUAL:
+                    singleEqual(c);
+                    break;
+                case SINGLE_MINUS:
+                    singleMinus(c);
+                    break;
+                case SINGLE_PLUS:
+                    singlePlus(c);
+                    break;
                 default:
                     break;
             }
@@ -106,6 +114,12 @@ public class Lexer {
             addToken(TokenType.WHITESPACE, c);
         } else if (utils.isSeparatorCharacter(c)) {
             addToken(TokenType.SEPARATOR, c);
+        } else if (c == '=') {
+            addBufferAndSetState(c, SINGLE_EQUAL);
+        } else if (c == '-') {
+            addBufferAndSetState(c, SINGLE_MINUS);
+        } else if (c == '+') {
+            addBufferAndSetState(c, SINGLE_PLUS);
         }
 
     }
@@ -194,6 +208,39 @@ public class Lexer {
             buffer.deleteCharAt(buffer.length() - 1);
         }
         addBufferAndSetState(c, CHAR_LITERAL);
+    }
+
+    private void singleEqual(char c) {
+        if (c == '=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void singleMinus(char c){
+        if (c=='-' || c=='='){
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void singlePlus(char c){
+        if (c=='+' || c=='='){
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
     }
 
 }
