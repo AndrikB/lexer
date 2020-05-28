@@ -108,6 +108,12 @@ public class Lexer {
                 case DOUBLE_GREATER:
                     doubleGreater(c);
                     break;
+                case SINGLE_PIPE:
+                    singlePipe(c);
+                    break;
+                case SINGLE_AMPERSAND:
+                    singleAmpersand(c);
+                    break;
                 default:
                     break;
             }
@@ -134,6 +140,10 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_PLUS);
         } else if (c == '<') {
             addBufferAndSetState(c, SINGLE_LESS);
+        } else if (c == '|') {
+            addBufferAndSetState(c, SINGLE_PIPE);
+        } else if (c == '&') {
+            addBufferAndSetState(c, SINGLE_AMPERSAND);
         }
 
     }
@@ -175,6 +185,8 @@ public class Lexer {
         if (c == '/') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.COMMENT);
+        } else if (c == '*') {
+            addToBuffer(c);
         } else {
             addBufferAndSetState(c, MULTI_LINE_COMMENT);
         }
@@ -304,5 +316,28 @@ public class Lexer {
             currentPos--;
         }
     }
+
+    private void singlePipe(char c) {
+        if (c == '|' || c == '=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void singleAmpersand(char c) {
+        if (c == '&' || c == '=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
 
 }
