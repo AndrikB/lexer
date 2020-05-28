@@ -104,8 +104,6 @@ public class Lexer {
             addBufferAndSetState(c, CHAR_LITERAL);
         } else if (Character.isWhitespace(c)) {
             addToken(TokenType.WHITESPACE, c);
-        } else if (utils.isBracketCharacter(c)) {
-            addToken(TokenType.BRACKET, c);
         } else if (utils.isSeparatorCharacter(c)) {
             addToken(TokenType.SEPARATOR, c);
         }

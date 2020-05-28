@@ -4,7 +4,6 @@ public enum TokenType {
     COMMENT,
     WHITESPACE,
     KEYWORD,
-    BRACKET,
     SEPARATOR,
     PUNCTUATION_MARK,
     OPERATOR,
