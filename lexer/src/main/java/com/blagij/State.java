@@ -16,5 +16,6 @@ public enum State {
     SINGLE_LESS,
     SINGLE_GREATER,
     SINGLE_PIPE,
-    SINGLE_AMPERSAND
+    SINGLE_AMPERSAND,
+    SINGLE_COLON,
 }

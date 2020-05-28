@@ -112,6 +112,9 @@ public class Lexer {
                 case SINGLE_AMPERSAND:
                     singleAmpersand(c);
                     break;
+                case SINGLE_COLON:
+                    singleColon(c);
+                    break;
                 default:
                     break;
             }
@@ -130,6 +133,8 @@ public class Lexer {
             addToken(TokenType.WHITESPACE, c);
         } else if (utils.isSeparatorCharacter(c)) {
             addToken(TokenType.SEPARATOR, c);
+        } else if (c == '~' || c == '?') {
+            addToken(TokenType.OPERATOR, c);
         } else if (c == '=' || c == '*' || c == '%' || c == '!' || c == '^') {
             addBufferAndSetState(c, SIMPLE_OPERATOR);
         } else if (c == '-') {
@@ -142,6 +147,8 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_PIPE);
         } else if (c == '&') {
             addBufferAndSetState(c, SINGLE_AMPERSAND);
+        } else if (c == ':') {
+            addBufferAndSetState(c, SINGLE_COLON);
         }
 
     }
@@ -315,5 +322,15 @@ public class Lexer {
         }
     }
 
+    private void singleColon(char c) {
+        if (c == ':') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            rollBack();
+        }
+    }
 
 }

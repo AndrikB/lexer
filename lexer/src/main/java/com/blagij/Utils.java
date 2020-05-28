@@ -9,7 +9,7 @@ public class Utils {
 
 
     private final List<Character> separatorCharacters =
-            Arrays.asList('(', ')', '[', ']', '{', '}', ';', ',', ':');
+            Arrays.asList('(', ')', '[', ']', '{', '}', ';', ',');
 
     public boolean isEscapeCharacter(Character c) {
         return escapeCharacters.contains(c);
