@@ -91,8 +91,8 @@ public class Lexer {
                 case CHAR_LITERAL_SLASH:
                     charLiteralSlash(c);
                     break;
-                case SINGLE_OPERATOR:
-                    singleOperator(c);
+                case SIMPLE_OPERATOR:
+                    simpleOperator(c);
                     break;
                 case SINGLE_MINUS:
                     singleMinus(c);
@@ -131,7 +131,7 @@ public class Lexer {
         } else if (utils.isSeparatorCharacter(c)) {
             addToken(TokenType.SEPARATOR, c);
         } else if (c == '=' || c == '*' || c == '%' || c == '!' || c == '^') {
-            addBufferAndSetState(c, SINGLE_OPERATOR);
+            addBufferAndSetState(c, SIMPLE_OPERATOR);
         } else if (c == '-') {
             addBufferAndSetState(c, SINGLE_MINUS);
         } else if (c == '+') {
@@ -234,7 +234,7 @@ public class Lexer {
         addBufferAndSetState(c, CHAR_LITERAL);
     }
 
-    private void singleOperator(char c) {
+    private void simpleOperator(char c) {
         if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
@@ -269,7 +269,7 @@ public class Lexer {
 
     private void singleLess(char c) {
         if (c == '<') {
-            addBufferAndSetState(c, SINGLE_OPERATOR);
+            addBufferAndSetState(c, SIMPLE_OPERATOR);
         } else if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
@@ -282,7 +282,7 @@ public class Lexer {
 
     private void singleGreater(char c) {
         if (c == '>') {
-            addBufferAndSetState(c, SINGLE_OPERATOR);
+            addBufferAndSetState(c, SIMPLE_OPERATOR);
         } else if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);

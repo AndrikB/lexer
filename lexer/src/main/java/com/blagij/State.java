@@ -10,7 +10,7 @@ public enum State {
     STRING_LITERAL_SLASH,
     CHAR_LITERAL,
     CHAR_LITERAL_SLASH,
-    SINGLE_OPERATOR,// *,%,!,=,^,>>,<<
+    SIMPLE_OPERATOR,// *,%,!,=,^,>>,<<
     SINGLE_MINUS,
     SINGLE_PLUS,
     SINGLE_LESS,
