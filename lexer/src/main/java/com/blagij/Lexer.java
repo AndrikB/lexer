@@ -11,11 +11,11 @@ import static com.blagij.State.*;
 
 public class Lexer {
     private final String code;
+    private final Utils utils = new Utils();
     private State state;
     private int currentPos;
     private List<Token> tokens;
     private StringBuilder buffer;
-    private Utils utils = new Utils();
 
     public Lexer(final String filePath) throws IOException {
         state = INITIAL;
@@ -115,6 +115,13 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_LINE_COMMENT);
         } else if (c == '*') {
             addBufferAndSetState(c, MULTI_LINE_COMMENT);
+        } else if (c == '=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
         }
     }
 
