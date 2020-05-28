@@ -18,4 +18,5 @@ public enum State {
     SINGLE_PIPE,
     SINGLE_AMPERSAND,
     SINGLE_COLON,
+    IDENTIFIER
 }

@@ -26,6 +26,9 @@ public class Lexer {
         byte[] bytes = Files.readAllBytes(new File(filePath).toPath());
 
         code = new String(bytes, StandardCharsets.UTF_8).replaceAll("\r", "");
+
+
+
     }
 
     private void addBufferAndSetState(char c, State state) {
@@ -50,6 +53,10 @@ public class Lexer {
     private void addToken(TokenType tokenType) {
         addToken(tokenType, buffer.toString());
         buffer = new StringBuilder();
+    }
+
+    private String getBuffer(){
+        return buffer.toString();
     }
 
     private void setState(State state) {
@@ -115,6 +122,9 @@ public class Lexer {
                 case SINGLE_COLON:
                     singleColon(c);
                     break;
+                case IDENTIFIER:
+                    identifier(c);
+                    break;
                 default:
                     break;
             }
@@ -143,12 +153,16 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_PLUS);
         } else if (c == '<') {
             addBufferAndSetState(c, SINGLE_LESS);
+        } else if (c == '>') {
+            addBufferAndSetState(c, SINGLE_GREATER);
         } else if (c == '|') {
             addBufferAndSetState(c, SINGLE_PIPE);
         } else if (c == '&') {
             addBufferAndSetState(c, SINGLE_AMPERSAND);
         } else if (c == ':') {
             addBufferAndSetState(c, SINGLE_COLON);
+        } else if (Character.isJavaIdentifierStart(c)) {
+            addBufferAndSetState(c, IDENTIFIER);
         }
 
     }
@@ -328,6 +342,20 @@ public class Lexer {
             addToken(TokenType.OPERATOR);
         } else {
             addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            rollBack();
+        }
+    }
+
+    private void identifier(char c) {
+        if (Character.isJavaIdentifierPart(c)) {
+            addToBuffer(c);
+        }else if (utils.isKeyWord(getBuffer())){
+            addToken(TokenType.KEYWORD);
+            setState(INITIAL);
+            rollBack();
+        } else {
+            addToken(TokenType.IDENTIFIER);
             setState(INITIAL);
             rollBack();
         }
