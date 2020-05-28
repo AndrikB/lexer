@@ -13,4 +13,8 @@ public enum State {
     SINGLE_EQUAL,
     SINGLE_MINUS,
     SINGLE_PLUS,
+    SINGLE_LESS,
+    DOUBLE_LESS,
+    SINGLE_GREATER,
+    DOUBLE_GREATER
 }

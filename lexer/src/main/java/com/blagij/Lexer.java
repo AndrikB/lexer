@@ -96,6 +96,18 @@ public class Lexer {
                 case SINGLE_PLUS:
                     singlePlus(c);
                     break;
+                case SINGLE_LESS:
+                    singleLess(c);
+                    break;
+                case DOUBLE_LESS:
+                    doubleLess(c);
+                    break;
+                case SINGLE_GREATER:
+                    singleGreater(c);
+                    break;
+                case DOUBLE_GREATER:
+                    doubleGreater(c);
+                    break;
                 default:
                     break;
             }
@@ -120,6 +132,8 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_MINUS);
         } else if (c == '+') {
             addBufferAndSetState(c, SINGLE_PLUS);
+        } else if (c == '<') {
+            addBufferAndSetState(c, SINGLE_LESS);
         }
 
     }
@@ -234,6 +248,54 @@ public class Lexer {
 
     private void singlePlus(char c){
         if (c=='+' || c=='='){
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void singleLess(char c) {
+        if (c == '<') {
+            addBufferAndSetState(c, DOUBLE_LESS);
+        } else if (c=='=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void doubleLess(char c) {
+        if (c=='=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void singleGreater(char c) {
+        if (c == '>') {
+            addBufferAndSetState(c, DOUBLE_LESS);
+        } else if (c=='=') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.OPERATOR);
+        } else {
+            addToken(TokenType.OPERATOR);
+            setState(INITIAL);
+            currentPos--;
+        }
+    }
+
+    private void doubleGreater(char c) {
+        if (c=='=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
