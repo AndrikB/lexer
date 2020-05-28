@@ -103,14 +103,8 @@ public class Lexer {
                 case SINGLE_LESS:
                     singleLess(c);
                     break;
-                case DOUBLE_LESS:
-                    doubleLess(c);
-                    break;
                 case SINGLE_GREATER:
                     singleGreater(c);
-                    break;
-                case DOUBLE_GREATER:
-                    doubleGreater(c);
                     break;
                 case SINGLE_PIPE:
                     singlePipe(c);
@@ -275,19 +269,8 @@ public class Lexer {
 
     private void singleLess(char c) {
         if (c == '<') {
-            addBufferAndSetState(c, DOUBLE_LESS);
+            addBufferAndSetState(c, SINGLE_OPERATOR);
         } else if (c == '=') {
-            addBufferAndSetState(c, INITIAL);
-            addToken(TokenType.OPERATOR);
-        } else {
-            addToken(TokenType.OPERATOR);
-            setState(INITIAL);
-            rollBack();
-        }
-    }
-
-    private void doubleLess(char c) {
-        if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
@@ -299,19 +282,8 @@ public class Lexer {
 
     private void singleGreater(char c) {
         if (c == '>') {
-            addBufferAndSetState(c, DOUBLE_LESS);
+            addBufferAndSetState(c, SINGLE_OPERATOR);
         } else if (c == '=') {
-            addBufferAndSetState(c, INITIAL);
-            addToken(TokenType.OPERATOR);
-        } else {
-            addToken(TokenType.OPERATOR);
-            setState(INITIAL);
-            rollBack();
-        }
-    }
-
-    private void doubleGreater(char c) {
-        if (c == '=') {
             addBufferAndSetState(c, INITIAL);
             addToken(TokenType.OPERATOR);
         } else {
