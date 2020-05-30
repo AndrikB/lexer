@@ -26,5 +26,4 @@ public enum State {
     FLOAT_NUMBER,
     INT_NUMBER,
     FLOAT_NUMBER_E,
-    ERROR_NUMBER,
 }

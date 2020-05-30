@@ -30,6 +30,10 @@ public class Lexer {
 
     }
 
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
     private void addBufferAndSetState(char c, State state) {
         addToBuffer(c);
         setState(state);
@@ -391,6 +395,10 @@ public class Lexer {
             addBufferAndSetState(c, BINARY_NUMBER);
         } else if (c >= '0' && c <= '7') {
             addBufferAndSetState(c, OCTAL_NUMBER);
+        } else {
+            addToken(TokenType.NUMBER_LITERAL);
+            setState(INITIAL);
+            rollBack();
         }
     }
 
