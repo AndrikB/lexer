@@ -37,4 +37,8 @@ public class Utils {
         return keyWords.contains(s);
     }
 
+    public boolean isHexChar(char c) {
+        return Character.isDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+    }
+
 }

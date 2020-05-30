@@ -28,7 +28,6 @@ public class Lexer {
         code = new String(bytes, StandardCharsets.UTF_8).replaceAll("\r", "");
 
 
-
     }
 
     private void addBufferAndSetState(char c, State state) {
@@ -55,7 +54,7 @@ public class Lexer {
         buffer = new StringBuilder();
     }
 
-    private String getBuffer(){
+    private String getBuffer() {
         return buffer.toString();
     }
 
@@ -125,6 +124,26 @@ public class Lexer {
                 case IDENTIFIER:
                     identifier(c);
                     break;
+                case SINGLE_ZERO:
+                    singleZero(c);
+                    break;
+                case HEX_NUMBER:
+                    hexNumber(c);
+                    break;
+                case BINARY_NUMBER:
+                    binaryNumber(c);
+                    break;
+                case OCTAL_NUMBER:
+                    octalNumber(c);
+                    break;
+                case INT_NUMBER:
+                    intNumber(c);
+                    break;
+                case FLOAT_NUMBER:
+                    floatNumber(c);
+                    break;
+                case FLOAT_NUMBER_E:
+                    floatNumberE(c);
                 default:
                     break;
             }
@@ -163,6 +182,10 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_COLON);
         } else if (Character.isJavaIdentifierStart(c)) {
             addBufferAndSetState(c, IDENTIFIER);
+        } else if (c == '0') {
+            addBufferAndSetState(c, SINGLE_ZERO);
+        } else if (Character.isDigit(c)) {
+            addBufferAndSetState(c, INT_NUMBER);
         }
 
     }
@@ -350,7 +373,7 @@ public class Lexer {
     private void identifier(char c) {
         if (Character.isJavaIdentifierPart(c)) {
             addToBuffer(c);
-        }else if (utils.isKeyWord(getBuffer())){
+        } else if (utils.isKeyWord(getBuffer())) {
             addToken(TokenType.KEYWORD);
             setState(INITIAL);
             rollBack();
@@ -358,6 +381,96 @@ public class Lexer {
             addToken(TokenType.IDENTIFIER);
             setState(INITIAL);
             rollBack();
+        }
+    }
+
+    private void singleZero(char c) {
+        if (c == 'x' || c == 'X') {
+            addBufferAndSetState(c, HEX_NUMBER);
+        } else if (c == 'b') {
+            addBufferAndSetState(c, BINARY_NUMBER);
+        } else if (c >= '0' && c <= '7') {
+            addBufferAndSetState(c, OCTAL_NUMBER);
+        }
+    }
+
+    private void hexNumber(char c) {
+        if (utils.isHexChar(c)) {
+            addToBuffer(c);
+        } else if (c == 'l' || c == 'L') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.NUMBER_LITERAL);
+        } else {
+            addToken(TokenType.NUMBER_LITERAL);
+            setState(INITIAL);
+            rollBack();
+        }
+    }
+
+    private void binaryNumber(char c) {
+        if (c == '0' || c == '1') {
+            addToBuffer(c);
+        } else if (c == 'l' || c == 'L') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.NUMBER_LITERAL);
+        } else {
+            addToken(TokenType.NUMBER_LITERAL);
+            setState(INITIAL);
+            rollBack();
+        }
+    }
+
+    private void octalNumber(char c) {
+        if (c >= '0' && c <= '7') {
+            addToBuffer(c);
+        } else if (c == 'l' || c == 'L') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.NUMBER_LITERAL);
+        } else if (c == 'e' || c == 'E') {
+            addBufferAndSetState(c, FLOAT_NUMBER_E);
+        } else if (c == '.') {
+            addBufferAndSetState(c, FLOAT_NUMBER);
+        } else {
+            addToken(TokenType.NUMBER_LITERAL);
+            setState(INITIAL);
+            rollBack();
+        }
+    }
+
+    private void intNumber(char c) {
+        if (Character.isDigit(c)) {
+            addToBuffer(c);
+        } else if (c == 'l' || c == 'L') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.NUMBER_LITERAL);
+        } else if (c == 'e' || c == 'E') {
+            addBufferAndSetState(c, FLOAT_NUMBER);
+        } else if (c == '.') {
+            addBufferAndSetState(c, FLOAT_NUMBER);
+        } else {
+            addToken(TokenType.NUMBER_LITERAL);
+            setState(INITIAL);
+            rollBack();
+        }
+    }
+
+    private void floatNumber(char c) {
+        if (Character.isDigit(c)) {
+            addToBuffer(c);
+        } else if (c == 'e' || c == 'E') {
+            addBufferAndSetState(c, FLOAT_NUMBER_E);
+        } else if (c == 'f' || c == 'F') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.NUMBER_LITERAL);
+        }
+    }
+
+    private void floatNumberE(char c) {
+        if (Character.isDigit(c)) {
+            addToBuffer(c);
+        } else if (c == 'f' || c == 'F') {
+            addBufferAndSetState(c, INITIAL);
+            addToken(TokenType.NUMBER_LITERAL);
         }
     }
 
