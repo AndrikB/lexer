@@ -10,7 +10,8 @@ public enum TokenType {
     NUMBER_LITERAL("FF9E00"),
     STRING_LITERAL("116C2C"),
     CHAR_LITERAL("13FF57"),
-    ERROR("FF0000");
+    ERROR("FF0000"),
+    DIRECTIVE("777777");
 
     private final String color;
 

@@ -25,8 +25,7 @@ public class Lexer {
 
         byte[] bytes = Files.readAllBytes(new File(filePath).toPath());
 
-        code = new String(bytes, StandardCharsets.UTF_8).replaceAll("\r", "");
-
+        code = new String(bytes, StandardCharsets.UTF_8).replaceAll("\r", "").concat("\n");
 
     }
 
@@ -148,9 +147,19 @@ public class Lexer {
                     break;
                 case FLOAT_NUMBER_E:
                     floatNumberE(c);
+                    break;
+                case DIRECTIVE:
+                    directive(c);
+                    break;
+                case DIRECTIVE_SLASH:
+                    directiveSlash(c);
+                    break;
                 default:
                     break;
             }
+        }
+        if (state != INITIAL || buffer.toString().length() != 0) {
+            addToken(TokenType.ERROR);
         }
 
     }
@@ -190,6 +199,8 @@ public class Lexer {
             addBufferAndSetState(c, SINGLE_ZERO);
         } else if (Character.isDigit(c)) {
             addBufferAndSetState(c, INT_NUMBER);
+        } else if (c == '#') {
+            addBufferAndSetState(c, DIRECTIVE);
         }
 
     }
@@ -482,4 +493,19 @@ public class Lexer {
         }
     }
 
+    private void directive(char c) {
+        if (c == '\n') {
+            addToken(TokenType.DIRECTIVE);
+            addToken(TokenType.WHITESPACE, c);
+            setState(INITIAL);
+        } else if (c == '\\') {
+            addBufferAndSetState(c, DIRECTIVE_SLASH);
+        } else {
+            addToBuffer(c);
+        }
+    }
+
+    private void directiveSlash(char c) {
+        addBufferAndSetState(c, DIRECTIVE);
+    }
 }

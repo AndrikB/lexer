@@ -57,7 +57,7 @@ public class Printer {
                         "\n" +
                         "<style>" +
                         "body{white-space: pre-wrap;}" +
-                        "span {margin-left: -2px;}" +
+                        "span {margin-left: -7px;}" +
                         style +
                         "</style>\n" +
                         "</head>\n" +
@@ -66,6 +66,7 @@ public class Printer {
                 "  <span class='tooltiptext'>%s</span>" +
                 "</span>";
         for (Token token : tokens) {
+            token.setValue(token.getValue().replace("<", "&#60;"));//< in value is no html tag
             html.append(String.format(template, token.getTokenType().getColor(), token.getValue(), token.getTokenType()));
         }
         html.append("</body>\n" +
